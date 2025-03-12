@@ -2,12 +2,12 @@
 
 # 📚 ArxivAgent - arXiv论文助手
 
-<img src="assets/logo.png" alt="ArxivAgent Logo" width="200"/>
+<img src="asset/logo.png" alt="ArxivAgent Logo" width="200"/>
 
 一个基于Python的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
 
-[![Github Stars](https://img.shields.io/github/stars/your-username/arxivagent?style=flat-square)](https://github.com/your-username/arxivagent)
-[![License](https://img.shields.io/github/license/your-username/arxivagent?style=flat-square)](https://github.com/your-username/arxivagent/blob/main/LICENSE)
+[![Github Stars](https://img.shields.io/github/stars/Raven-EM11/arxivagent?style=flat-square)](https://github.com/Raven-EM11/arxivagent)
+[![License](https://img.shields.io/github/license/Raven-EM11/arxivagent?style=flat-square)](https://github.com/Raven-EM11/arxivagent/blob/main/LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 
 </div>
@@ -51,6 +51,9 @@ Ubuntu:
 ```bash
 # 下载带有patched qt的版本
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
+如果你的 Ubuntu 版本不是 focal (20.04)，可以根据你的版本选择对应的包：
+Jammy (22.04): wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+Bionic (18.04): wkhtmltox_0.12.6-1.bionic_amd64.de
 
 # 安装依赖
 sudo apt-get install -y xfonts-75dpi xfonts-base
@@ -148,7 +151,7 @@ user_email=your_recipient_email
 urls=["自行创建"]
 ```
 
-### 6. 运行
+### 8. 运行
 
 ```bash
 # 启动自动获取论文服务
@@ -158,7 +161,7 @@ python auto_arxiv_fetch.py
 python main_local.py
 ```
 
-## 使用说明
+## 📃使用说明
 
 ### 1. 论文获取
 
@@ -193,51 +196,25 @@ query="检索文章的需求"
 category=检索论文的类别例如cs.AI,cs.CL等
 ```
 
-## 项目结构
+## 📁 项目结构
 
 ```
-```
-llm
-ArxivAgent 是一个基于 Python 的论文分析工具，可以自动获取、分析和推送 arXiv 上的最新论文。它使用Qwen-Plus以及
-deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
-## 主要特性
-- 🔄 自动获取 arXiv 指定类别的最新论文
-- 🤖 使用大语言模型进行论文内容分析
-- 🔍 支持自然语言检索相关论文
-- 📊 生成论文分析报告（PDF/图片格式）
-- 📧 支持邮件定时推送
-- 🌐 支持向量数据库存储和相似度检索
-## 快速开始
-### 1. 环境要求
-### 2. 安装依赖
-推荐使用conda创建虚拟环境
-### 3. 安装 wkhtmltopdf
-- Windows: 从[官方网站](https://wkhtmltopdf.org/downloads.html)下载安装
-- Ubuntu20.04: 
-# 1. 下载带有 patched qt 的版本
-如果你的 Ubuntu 版本不是 focal (20.04)，可以根据你的版本选择对应的包：
-Jammy (22.04): wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-Bionic (18.04): wkhtmltox_0.12.6-1.bionic_amd64.de
-# 2. 安装依赖
-# 3. 安装 wkhtmltopdf
-# 4. 验证安装
-wkhtmltopdf --version
-- MacOS: `brew install wkhtmltopdf`
-.
-├── articles_processor.py   # 论文处理模块
-├── auto_arxiv_fetch.py    # 自动获取论文
-├── config.ini            # 配置文件
-├── main_local.py        # 主程序
-├── models.py            # 数据模型
-├── search_engine.py     # 搜索引擎
-├── template/            # 报告模板
-├── scipdf/              # 论文pdf解析工具
-└── utils/               # 工具函数
-└── README.md            # 说明文档
-
+ArxivAgent/
+├── auto_arxiv_fetch.py    # 自动获取论文服务
+├── main_local.py         # 本地分析存储服务主程序
+├── articles_processor   # 论文处理
+├── models               # 数据模型
+├── search_engine        # 搜索引擎
+├── utils                # 工具函数
+│   └── logger.py       # 日志工具
+├── templates/          # 报告模板
+├── scipdf/            # PDF解析工具
+├── config.ini         # 配置文件
+├── requirements.txt   # 项目依赖
+└── README.md         # 项目文档
 ```
 
-## 常见问题
+## ❓常见问题
 
 1. PDF生成失败
    - 检查 wkhtmltopdf 是否正确安装
@@ -254,10 +231,6 @@ wkhtmltopdf --version
 ## 贡献指南
 
 欢迎提交 Issue 和 Pull Request！
-
-## 开源协议
-
-本项目采用 MIT 协议开源。
 
 ## 致谢
 
