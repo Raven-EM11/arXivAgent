@@ -1,6 +1,7 @@
 <div align="center">
 
-# ArxivAgent [![pEUJSts.md.png](https://s21.ax1x.com/2025/03/12/pEUJSts.md.png)](https://imgse.com/i/pEUJSts)
+# ArxivAgent ![a5d1a4a5db0694af6d2b6385d2057504.png](https://i.miji.bid/2025/03/12/a5d1a4a5db0694af6d2b6385d2057504.png)
+
 
 一个基于Python的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
 
@@ -9,6 +10,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 
 </div>
+
+也可以直接访问网站无需部署代码[arXivAgent](http://www.arxiv.club)
 
 ## 🌟 主要特性
 
