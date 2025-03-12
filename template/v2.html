@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究笔记</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #2AAB8E;
+            min-height: 100vh;
+            padding: 8px;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Diagonal stripes background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 100px,
+                rgba(233, 30, 99, 0.8) 100px,
+                rgba(233, 30, 99, 0.8) 120px
+            );
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Rest of the styles remain the same */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 13px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .card-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            padding-left: 18px;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .summary .card-title::before { background-color: #2AAB8E; }
+        .summary { border-left: 4px solid #2AAB8E; }
+
+        .relevance .card-title::before { background-color: #2AAB8E; }
+        .relevance { border-left: 4px solid #2AAB8E; }
+
+        .innovation .card-title::before { background-color: #2AAB8E; }
+        .innovation { border-left: 4px solid #2AAB8E; }
+
+        .rating .card-title::before { background-color: #2AAB8E; }
+        .rating { border-left: 4px solid #2AAB8E; }
+
+        .abstract .card-title::before { background-color: #2AAB8E; }
+        .abstract { border-left: 4px solid #2AAB8E; }
+
+        .innovation-list {
+            list-style-type: none;
+            counter-reset: item;
+        }
+
+        .innovation-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .innovation-list li::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #2AAB8E;
+            margin-right: 10px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .star-rating {
+            color: #2AAB8E;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .rating-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2AAB8E;
+            margin-right: 8px;
+        }
+
+        .rating-score {
+            font-weight: 600;
+            color: #2AAB8E;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 20px;
+        }
+
+        .rating-detail {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(42, 171, 142, 0.05);
+            border-radius: 8px;
+        }
+
+        .rating-description {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+            padding-left: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>研究笔记</h1>
+            <p class="subtitle">Research Notes</p>
+        </header>
+
+        <main>
+            <div class="card summary">
+                <div class="card-content">
+                    <h2 class="card-title">Summary</h2>
+                    <div class="card-body">
+                        <p>该研究旨在通过检索增强生成（RAG）技术提升大语言模型（LLMs）的数学推理能力，构建了名为LemmaHead的RAG知识库，结合教科书内容为模型提供数学上下文，并设计了增强查询生成（EQG）和迭代证明增强（IPA）方法，实验表明在MiniF2F数据集上，结合IPA的RAG方法显著提高了自动定理证明的准确率。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card relevance">
+                <div class="card-content">
+                    <h2 class="card-title">Relevance</h2>
+                    <div class="card-body">
+                        <p>高度相关，直接探讨RAG技术在大语言模型数学证明生成中的应用，属于大模型RAG领域的核心研究方向。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card innovation">
+                <div class="card-content">
+                    <h2 class="card-title">Innovation</h2>
+                    <div class="card-body">
+                        <div class="innovation-list">
+                            <div class="innovation-list-item">
+                                <p>构建面向数学领域的RAG知识库（LemmaHead）：通过定制化的PDF到LaTeX转换和语义分块策略，解决了传统RAG在数学符号与逻辑结构处理中的不足。</p>
+                            </div>
+                            <div class="innovation-list-item">
+                                <p>增强查询生成（EQG）：通过LLM主动生成数学概念关键词优化检索查询，检索结果相关性提升36%。</p>
+                            </div>
+                            <div class="innovation-list-item">
+                                <p>迭代证明增强（IPA）：引入多轮迭代的上下文增强机制，突破单次RAG的性能瓶颈。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rating">
+                <div class="card-content">
+                    <h2 class="card-title">Rating</h2>
+                    <div class="card-body">
+                        <div class="star-rating">★★★★☆ 4.5</div>
+                        <div class="rating-detail">
+                            <div class="rating-item">
+                                <span class="rating-label">方法创新性</span>
+                                <span class="rating-score">4.8/5</span>
+                            </div>
+                        </div>
+                        <div class="rating-detail">
+                            <div class="rating-item">
+                                <span class="rating-label">论文写作</span>
+                                <span class="rating-score">4.3/5</span>
+                            </div>
+                        </div>
+                        <div class="rating-detail">
+                            <div class="rating-item">
+                                <span class="rating-label">相关性</span>
+                                <span class="rating-score">5/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

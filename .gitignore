@@ -1,0 +1,6 @@
+config.ini
+utils/__pycache__/
+scipdf/__pycache__/
+scipdf/features/__pycache__/
+scipdf/pdf/__pycache__/
+vector_cache.pkl

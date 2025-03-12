@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日论文</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(to bottom right, #f0f2f5, #ffffff);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 13px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .card-body {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            padding-left: 18px;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .abstract .card-title::before { background-color: #d9739a; }  /* 浅蓝色 */
+        .abstract { border-left: 4px solid #d9739a; }
+
+        .summary .card-title::before { background-color: #4299e1; }
+        .summary { border-left: 4px solid #4299e1; }
+
+        .relevance .card-title::before { background-color: #48bb78; }
+        .relevance { border-left: 4px solid #48bb78; }
+
+        .innovation .card-title::before { background-color: #9f7aea; }
+        .innovation { border-left: 4px solid #9f7aea; }
+
+        .rating .card-title::before { background-color: #ed8936; }
+        .rating { border-left: 4px solid #ed8936; }
+
+        .innovation-list {
+            list-style-type: none;
+            counter-reset: item;
+        }
+
+        .innovation-list li {
+            margin-bottom: 10px;
+            display: flex;
+        }
+
+        .innovation-list li::before {
+            content: counter(item);
+            counter-increment: item;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #9f7aea;
+            color: white;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .star-rating {
+            color: #ed8936;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .rating-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #ed8936;
+            margin-right: 8px;
+        }
+
+        .rating-score {
+            font-weight: 600;
+            color: #ed8936;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+            <p class="subtitle">{{ title_cn }}</p>
+        </header>
+
+        <main>
+            <div class="card summary">
+                <div class="card-content">
+                    <h2 class="card-title">全文总结</h2>
+                    <div class="card-body">
+                        <p>{{ summary }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card abstract">
+                <div class="card-content">
+                    <h2 class="card-title">原文摘要</h2>
+                    <div class="card-body">
+                        <p>{{ abstract }}</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            原文链接: <a href="{{ article_url }}" target="_blank">{{ article_url }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rating">
+                <div class="card-content">
+                    <h2 class="card-title">推荐指数</h2>
+                    <div class="card-body">
+                        <div class="star-rating">
+                            {% set full_stars = (rating_score | float | round(1)) | int %}
+                            {% set half_star = (rating_score | float | round(1)) % 1 >= 0.5 %}
+                            {{ '★' * full_stars }}{{ '☆' if half_star else '' }}{{ '☆' * (5 - full_stars - (1 if half_star else 0)) }}
+                            {{ rating_score }}
+                        </div>
+                        {% for category, detail in rating_details.items() %}
+                        <div class="rating-detail">
+                            <div class="rating-item">
+                                <span class="rating-label">{{ category }}</span>
+                                <span class="rating-score">{{ detail.score }}/5</span>
+                            </div>
+                            {% if category == "创新性" and detail.description is sequence and detail.description is not string %}
+                                <ul class="innovation-list">
+                                {% for point in detail.description %}
+                                    <li>{{ point }}</li>
+                                {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="rating-description">{{ detail.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

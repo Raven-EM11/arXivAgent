@@ -1,0 +1,44 @@
+# API 相关
+fastapi==0.115.8
+uvicorn==0.34.0
+aiomysql==0.2.0
+pydantic==2.10.6
+
+# 数据库相关
+mysql-connector-python==8.3.0
+pymilvus==2.5.4
+
+# AI/LLM 相关
+openai==1.14.2
+cozepy==0.12.0
+
+# 文档处理相关
+arxiv==2.1.0
+PyPDF2==3.0.1
+pdfkit==1.0.0
+imgkit==1.2.3
+jinja2==3.1.5
+textstat==0.7.5
+spacy==3.8.4
+beautifulsoup4==4.13.3
+PyMuPDF==1.25.3
+lxml==5.3.1
+# 云存储相关
+oss2==2.19.1
+
+# 邮件相关
+python-dotenv==1.0.1
+
+# 时间处理
+pytz==2025.1
+schedule==1.2.1
+
+# 工具类
+requests==2.31.0
+python-multipart==0.0.20
+
+# 其他依赖
+aiohttp==3.9.3
+numpy==1.26.4
+pandas==2.2.3
+pillow==11.1.0 

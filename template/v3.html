@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #2AAB8E, #1E8E73);
+            min-height: 100vh;
+            padding: 15px 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;  /* 调整为与imgkit宽度一致 */
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px 15px;  /* 减少左右内边距 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 22px;  /* 调小标题字号 */
+            color: #2AAB8E;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #2AAB8E;
+            overflow: hidden;
+        }
+
+        .card-title {
+            color: white;
+            background: #2AAB8E;
+            padding: 8px 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: white;
+        }
+
+        .card-body {
+            padding: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .innovation-list {
+            list-style: none;
+            padding-left: 8px;
+        }
+
+        .innovation-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .innovation-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #2AAB8E;
+            font-size: 18px;
+        }
+
+        .star-rating {
+            font-size: 26px;
+            color: #F9BF45;
+            margin-bottom: 15px;
+        }
+
+        .rating-detail {
+            background: #F6F8FA;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .rating-label {
+            color: #2AAB8E;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .rating-score {
+            color: #2AAB8E;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .rating-description {
+            margin-top: 6px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .article-url {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #666;
+            word-break: break-all;
+            background: #F6F8FA;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ title }}</h1>
+        </header>
+
+        <main>
+            <div class="card abstract">
+                <div class="card-content">
+                    <h2 class="card-title">原文摘要</h2>
+                    <div class="card-body">
+                        <p>{{ abstract }}</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            原文链接: <a href="{{ article_url }}" target="_blank">{{ article_url }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card summary">
+                <div class="card-content">
+                    <h2 class="card-title">全文总结</h2>
+                    <div class="card-body">
+                        <p>{{ summary }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card relevance">
+                <div class="card-content">
+                    <h2 class="card-title">相关性</h2>
+                    <div class="card-body">
+                        <p>{{ relevance }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card innovation">
+                <div class="card-content">
+                    <h2 class="card-title">创新点</h2>
+                    <div class="card-body">
+                        <ol class="innovation-list">
+                            {% for innovation in innovations %}
+                            <li>{{ innovation }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rating">
+                <div class="card-content">
+                    <h2 class="card-title">推荐指数</h2>
+                    <div class="card-body">
+                        <div class="star-rating">
+                            {% set full_stars = (rating_score | float | round(1)) | int %}
+                            {% set half_star = (rating_score | float | round(1)) % 1 >= 0.5 %}
+                            {{ '★' * full_stars }}{{ '☆' if half_star else '' }}{{ '☆' * (5 - full_stars - (1 if half_star else 0)) }}
+                            {{ rating_score }}
+                        </div>
+                        {% for category, detail in rating_details.items() %}
+                        <div class="rating-detail">
+                            <div class="rating-item">
+                                <span class="rating-label">{{ category }}</span>
+                                <span class="rating-score">{{ detail.score }}/5</span>
+                            </div>
+                            <p class="rating-description">{{ detail.description }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
