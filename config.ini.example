@@ -1,0 +1,32 @@
+[query]
+query="希望每天检索推荐的论文主题"
+category=检索论文的类别例如cs.AI,cs.CL等
+
+[database]
+user=your_db_user
+password=your_db_password
+host=localhost
+database=arxiv
+port=3306
+
+[vectordb]
+可以在zilliz官网创建自己的向量数据库，然后修改配置文件
+uri=your_milvus_uri
+user=your_milvus_user
+password=your_milvus_password
+
+[aliyun]
+使用阿里云百炼的api，需要先在阿里云控制台创建
+api_key=your_api_key
+
+[email]
+smtp_server=smtp.your_email_server.com
+smtp_port=25
+sender_email=your_sender_email
+sender_password=your_email_password
+user_email=your_recipient_email
+
+[grobid]
+# GROBID服务器地址（填写多个可以均衡负载），用于高质量地读取PDF文档
+# 获取方法：复制以下空间https://huggingface.co/spaces/qingxu98/grobid，设为public，然后GROBID_URL = "https://(你的hf用户名如qingxu98)-(你的填写的空间名如grobid).hf.space"
+urls=["自行创建"]

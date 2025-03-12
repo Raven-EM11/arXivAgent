@@ -28,7 +28,7 @@ class LLMModel:
         self.client = OpenAI(api_key=self.api_key, base_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
         self.model = model
 
-    def prompt(self, message, temperature=0.7, max_tokens=8192, max_retries=3, retry_delay=30):
+    def prompt(self, message, temperature=0.3, max_tokens=8192, max_retries=3, retry_delay=30):
         """发送提示到LLM并获取响应"""
         for attempt in range(max_retries):
             try:

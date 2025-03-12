@@ -3,8 +3,6 @@ import os
 import pickle
 from openai import OpenAI
 from pymilvus import MilvusClient, DataType
-from cozepy import Coze, TokenAuth, COZE_CN_BASE_URL, Message, ChatEventType
-from dotenv import load_dotenv, find_dotenv
 from models import LLMModel, Database, Config
 from articles_processor import ArticlePostProcessor
 import pytz
@@ -59,7 +57,27 @@ class VectorDB:
             if cls._instance is None:
                 cls._instance = super().__new__(cls)
             return cls._instance
-    
+        
+    # 如果使用本地向量数据库，可以取消注释下面代码
+    # def __init__(self, db_path="./milvus_embedding.db"):
+    #     self.client = MilvusClient(db_path)
+    #     # 初始化OpenAI客户端
+    #     self.embedding_client = OpenAI(
+    #         api_key=os.getenv("DASHSCOPE_API_KEY"),
+    #         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
+    #     )
+    #     self.vector_cache = VectorCache()
+        
+    #     # 在初始化时创建集合
+    #     self.init_collection()
+        
+    #     # 确保集合加载到内存中
+    #     try:
+    #         self.client.load_collection("articles")
+    #         print("成功加载集合 'articles' 到内存")
+    #     except Exception as e:
+    #         print(f"加载集合时出错: {e}")
+    #         raise e
     def __init__(self):
         """初始化数据库连接"""
         if hasattr(self, '_initialized'):
@@ -531,6 +549,7 @@ class SearchProcessor:
         - filtered_articles: 经过LLM判断的文章列表
         """
         filtered_articles = []
+        llm = LLMModel(model="deepseek-r1")
         
         # 将文章列表分批处理
         for i in range(0, len(articles), batch_size):
@@ -568,7 +587,7 @@ class SearchProcessor:
             """
             try:
                 print("LLM开始执行过滤任务")
-                response = self.llm.prompt(prompt, temperature=0.1)
+                response = llm.prompt(prompt, temperature=0.1)
                 # print("response: ", response)
                 # 解析返回的JSON数组
                 try:
