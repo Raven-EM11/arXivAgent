@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![b66da0625bc97a464bee35e2cb4e833f.png](https://i.miji.bid/2025/03/12/b66da0625bc97a464bee35e2cb4e833f.png) ArxivAgent
+# ![5ed2c8a342e9a9a9661a70e3ee4a3c07.png](https://i.miji.bid/2025/03/12/5ed2c8a342e9a9a9661a70e3ee4a3c07.png) ArxivAgent
 
 
 一个基于Python的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
