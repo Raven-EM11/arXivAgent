@@ -505,7 +505,7 @@ class SearchProcessor:
                 
         return filtered_articles
     
-    def embedding_filter(self, query, articles, category, threshold=0.5):
+    def embedding_filter(self, query, articles, category, threshold=0.3):
         """
         第二阶段：embedding相似度过滤
         
@@ -521,9 +521,9 @@ class SearchProcessor:
         # 使用search_similar_articles获取相似文章
         # 改为针对query中的关键词进行相似度匹配
         keywords = self.extract_keywords_qwen(query)
-        print(f"\n测试查询: {query}")
-        print(f"\n测试查询关键词为: {keywords}")
-        # similar_results = self.search_similar_articles(query, threshold=threshold)
+        # print(f"\n测试查询: {query}")
+        # print(f"\n测试查询关键词为: {keywords}")
+        # similar_results = self.search_similar_articles(query,category, threshold=threshold)
         similar_results = self.search_similar_articles(" ".join(keywords), category, threshold=threshold)
         # similar_results = self.search_similar_articles_without_time(" ".join(keywords), category, threshold=threshold)
         # print("similar_results", similar_results)
