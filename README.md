@@ -27,13 +27,13 @@
 
 ## 🚀 快速开始
 
-### 环境要求
+### 1. 环境要求
 
 - Python 3.10+
 - MySQL 8.0+
 - wkhtmltopdf 0.12.6 (with patched qt)（用于PDF生成）
 
-### 安装步骤
+### 2. 安装步骤
 
 1. **创建环境**
 ```bash
@@ -72,7 +72,7 @@ MacOS:
 brew install wkhtmltopdf
 ```
 
-### 4. 数据库配置
+### 3. 数据库配置
 
 1. 创建 MySQL 数据库：
 
@@ -107,17 +107,17 @@ CREATE TABLE arxiv_daily (
     FULLTEXT idx_ft_cn (CN_title, CN_summary) WITH PARSER ngram
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
-### 5. 安装pdf解析相关工具
+### 4. 安装pdf解析相关工具
 运行代码进行pdf解析还需要一个en_core_web_smspacy的模型进，你可以运行如下代码来下载它
 ```bash
 python -m spacy download en_core_web_sm
 ```
 
-### 6. 配置向量数据库
+### 5. 配置向量数据库
 可以在本地创建向量数据库文件，也可以使用zilliz官网创建自己的向量数据库，然后修改配置文件。
 使用zilliz可参考文档：https://zilliz.com/docs/v2.0/zh-CN/quick-start/quick-start-python
 
-### 7. 配置文件
+### 6. 配置文件
 
 复制 `config.ini.example` 为 `config.ini` 并修改相关配置：
 
@@ -156,13 +156,13 @@ user_email=your_recipient_email
 urls=["自行创建"]
 ```
 
-### 8. 运行
+### 7. 运行
 
 ```bash
-# 启动自动获取论文服务
+# 先启动自动获取论文服务，获取近两天内的论文
 python auto_arxiv_fetch.py
 
-# 启动本地分析存储服务
+# 启动本地检索、分析、推送服务
 python main_local.py
 ```
 
