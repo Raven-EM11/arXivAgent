@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![095fc2e5fd8c8c9656ca5247e9eaab1b.png](https://i.miji.bid/2025/03/13/095fc2e5fd8c8c9656ca5247e9eaab1b.png) ArxivAgent
+# ![601175596da04add48500c5ee3c7a4bb.png](https://i.miji.bid/2025/03/13/601175596da04add48500c5ee3c7a4bb.png) ArxivAgent
 
 
 一个基于Python的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
@@ -9,7 +9,8 @@
 [![License](https://img.shields.io/github/license/Raven-EM11/arxivagent?style=flat-square)](https://github.com/Raven-EM11/arxivagent/blob/main/LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 
-> **🌐 也可以直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**
+
+ **🌐 也可以直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**
 
 </div>
 
@@ -22,6 +23,7 @@
 - 📊 **分析报告** - 生成论文分析报告（PDF/图片格式）
 - 📧 **定时推送** - 支持邮件定时推送最新论文
 - 🌐 **向量检索** - 支持向量数据库存储和相似度检索
+- 🎨 **自定义模版** - 支持自定义论文分析模版
 
 ## 🚀 快速开始
 
@@ -96,6 +98,7 @@ CREATE TABLE arxiv_daily (
     doi VARCHAR(255),
     journal_ref TEXT,
     comment TEXT,
+    full_text TEXT,
     
     INDEX idx_published (published),
     INDEX idx_primary_category (primary_category),
@@ -137,7 +140,7 @@ user=your_milvus_user
 password=your_milvus_password
 
 [aliyun]
-使用阿里云百炼的api，需要先在阿里云控制台创建
+使用阿里云百炼的api，需要先在阿里云控制台创建，新人送100w/1000w tokens
 api_key=your_api_key
 
 [email]
