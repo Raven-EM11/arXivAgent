@@ -3,14 +3,14 @@
 # ![601175596da04add48500c5ee3c7a4bb.png](https://i.miji.bid/2025/03/13/601175596da04add48500c5ee3c7a4bb.png) ArxivAgent
 
 
-一个基于Python的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
+一个基于arXiv API与LLM的论文分析工具，可以自动获取、分析和推送arXiv上的最新论文。使用Qwen-Plus以及deepseek-r1模型来分析论文内容，生成中文摘要，并根据用户兴趣进行智能推荐与每日推送。
 
 [![Github Stars](https://img.shields.io/github/stars/Raven-EM11/arxivagent?style=flat-square)](https://github.com/Raven-EM11/arxivagent)
 [![License](https://img.shields.io/github/license/Raven-EM11/arxivagent?style=flat-square)](https://github.com/Raven-EM11/arxivagent/blob/main/LICENSE)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 
 
- **🌐 也可以直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**
+ **🌐 直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**
 
 </div>
 
