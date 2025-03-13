@@ -19,7 +19,7 @@ class ArxivAnalyzer:
         self.config = Config()
         self.model = LLMModel()
         self.search_processor = SearchProcessor(self.config.db_config(), self.model)
-        self.post_processor = ArticlePostProcessor(self.model)
+        self.post_processor = ArticlePostProcessor(LLMModel(model_name='deepseek-r1'))
         
     def process_query(self, query: str, category: str, send_to_email: bool = False, max_results: int = 50):
 
