@@ -52,6 +52,8 @@ class ArticlePostProcessor:
                     "description": analysis['rating_details']["相关程度"]["description"]
                 }
             },
+            'first_author': article.author_and_affiliation.get('first_author', ''),  # 添加第一作者
+            'author_institutions': article.author_and_affiliation.get('author_institutions', []),  # 添加作者机构信息
             'update_time': datetime.now().strftime('%Y年%m月%d日 %H:%M')
         }
         

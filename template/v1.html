@@ -84,6 +84,7 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            text-align: left;
         }
 
         .card-title::before {
@@ -101,6 +102,7 @@
             color: #555;
             padding-left: 18px;
             border-left: 1px solid rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
         .abstract .card-title::before { background-color: #d9739a; }  /* 浅蓝色 */
         .abstract { border-left: 4px solid #d9739a; }
@@ -176,6 +178,31 @@
             color: #888;
             margin-top: 30px;
         }
+
+        /* 添加作者信息样式 */
+        .authors .card-title::before { background-color: #48BB78; }
+        .authors { border-left: 4px solid #48BB78; }
+        
+        .author-item {
+            margin: 8px 0;
+            padding-left: 15px;
+            border-left: 2px solid #e2e8f0;
+            text-align: left;
+            line-height: 1.5;
+            color: #2d3748;
+        }
+
+        .first-author {
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 6px;
+            text-align: left;
+        }
+
+        .authors .card-content {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -183,6 +210,27 @@
         <header>
             <h1>{{ title }}</h1>
             <p class="subtitle">{{ title_cn }}</p>
+            
+            <!-- 添加作者信息卡片 -->
+            <div class="card authors">
+                <div class="card-content">
+                    <h2 class="card-title">作者信息</h2>
+                    <div class="card-body">
+                        <div class="first-author">
+                            <strong>第一作者：</strong>{{ first_author }}
+                        </div>
+                        <div class="all-authors">
+                            {% for author_info in author_institutions %}
+                                {% for author, institution in author_info.items() %}
+                                <div class="author-item">
+                                    {{ author }}：{{ institution }}
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <main>

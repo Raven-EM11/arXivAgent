@@ -130,8 +130,8 @@ def insert_articles_to_database(category, articles, table_name):
     insert_query = f"""
     INSERT INTO {table_name} 
     (title, summary, published, authors, categories, comment, doi, entry_id, 
-    journal_ref, primary_category, updated, CN_title, CN_summary) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    journal_ref, primary_category, updated, CN_title, CN_summary, author_affiliations) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     records = []
@@ -151,12 +151,17 @@ def insert_articles_to_database(category, articles, table_name):
             logger.info(f"成功翻译文章：{article.title[:50]}...")
         except Exception as e:
             logger.error(f"翻译文章时出错：{str(e)}")
-    
+
+    for article in articles:
+        # 获取每篇文章的作者与所属机构相关信息
+        article.get_author_and_affiliation()
+        logger.info(f"成功获取文章：{article.title[:50]}的作者与所属机构相关信息：{article.author_and_affiliation}")
+        
     for article in articles:
         # 将Author对象列表转换为作者名字的列表，然后转换为JSON字符串
         authors_json = json.dumps([str(author) for author in article.authors])
         categories_json = json.dumps(article.categories.split(',') if isinstance(article.categories, str) else article.categories)
-       
+        author_affiliations_json = json.dumps(article.author_and_affiliation)
         
         record = (
             article.title, 
@@ -171,7 +176,8 @@ def insert_articles_to_database(category, articles, table_name):
             article.primary_category,
             article.updated,       
             getattr(article, 'CN_title', None),    # 获取翻译后的标题，如果没有则为None
-            getattr(article, 'CN_summary', None)    # 获取翻译后的摘要，如果没有则为None
+            getattr(article, 'CN_summary', None),    # 获取翻译后的摘要，如果没有则为None
+            author_affiliations_json
         )
         records.append(record)
 

@@ -13,6 +13,7 @@ import random
 import requests
 from functools import lru_cache
 from utils.logger import Logger
+from cozepy import Coze, TokenAuth, COZE_CN_BASE_URL
 
 logger = Logger.get_logger('models')
 
@@ -309,6 +310,22 @@ class Article:
                 print(f"模型调用失败: {e}")
         return "分析生成失败，请稍后再试"
 
+    def get_author_and_affiliation(self):
+        config = Config()
+        workflow_id = config.coze_config()['workflow_id']
+        coze = Coze(auth=TokenAuth(config.coze_config()['coze_api_token']), base_url=COZE_CN_BASE_URL)
+        pdf_url = self.entry_id.replace('abs', 'pdf')
+        workflow = coze.workflows.runs.create(
+            workflow_id=workflow_id,
+            parameters={
+                "input": pdf_url
+            }
+        )
+        author_and_affiliation = json.loads(workflow.data).get('output', [])
+        # logger.info(f"文章{self.title}的作者与所属机构相关信息: {author_and_affiliation}")
+        author_and_affiliation_dict = json.loads(author_and_affiliation)
+        self.author_and_affiliation = author_and_affiliation_dict
+        return author_and_affiliation_dict
 
 
 class Config:
