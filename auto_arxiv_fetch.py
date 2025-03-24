@@ -154,7 +154,7 @@ def insert_articles_to_database(category, articles, table_name):
 
     for article in articles:
         # 获取每篇文章的作者与所属机构相关信息
-        article.get_author_and_affiliation()
+        article.get_author_and_affiliation(model)
         logger.info(f"成功获取文章：{article.title[:50]}的作者与所属机构相关信息：{article.author_and_affiliation}")
         
     for article in articles:

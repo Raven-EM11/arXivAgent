@@ -13,8 +13,8 @@ import random
 import requests
 from functools import lru_cache
 from utils.logger import Logger
-from cozepy import Coze, TokenAuth, COZE_CN_BASE_URL
-
+import fitz  # PyMuPDF
+from io import BytesIO
 logger = Logger.get_logger('models')
 
 class LLMModel:
@@ -310,22 +310,78 @@ class Article:
                 print(f"模型调用失败: {e}")
         return "分析生成失败，请稍后再试"
 
-    def get_author_and_affiliation(self):
-        config = Config()
-        workflow_id = config.coze_config()['workflow_id']
-        coze = Coze(auth=TokenAuth(config.coze_config()['coze_api_token']), base_url=COZE_CN_BASE_URL)
+    def get_author_and_affiliation(self, model: LLMModel):
         pdf_url = self.entry_id.replace('abs', 'pdf')
-        workflow = coze.workflows.runs.create(
-            workflow_id=workflow_id,
-            parameters={
-                "input": pdf_url
-            }
-        )
-        author_and_affiliation = json.loads(workflow.data).get('output', [])
-        # logger.info(f"文章{self.title}的作者与所属机构相关信息: {author_and_affiliation}")
-        author_and_affiliation_dict = json.loads(author_and_affiliation)
-        self.author_and_affiliation = author_and_affiliation_dict
-        return author_and_affiliation_dict
+
+        def extract_pdf_first_page(pdf_url):
+            try:
+                # 下载PDF文件
+                response = requests.get(pdf_url)
+                response.raise_for_status()  # 检查HTTP请求状态
+                
+                # 将PDF内容转为内存文件流
+                pdf_stream = BytesIO(response.content)
+                
+                # 使用PyMuPDF读取PDF
+                with fitz.open(stream=pdf_stream, filetype="pdf") as doc:
+                    first_page = doc.load_page(0)  # 加载第一页（索引从0开始）
+                    page_text = first_page.get_text()  # 提取文本内容
+                    
+                    return page_text.strip()  # 返回处理后的文本
+            
+            except requests.exceptions.RequestException as e:
+                return ""
+            except Exception as e:
+                return ""
+        pdf_first_page = extract_pdf_first_page(pdf_url)
+        # config = Config()
+        # workflow_id = config.coze_config()['workflow_id']
+        # coze = Coze(auth=TokenAuth(config.coze_config()['coze_api_token']), base_url=COZE_CN_BASE_URL)
+        
+        max_retries = 2
+        retry_delay = 5  # 5秒延迟
+        
+        for attempt in range(max_retries):
+            try:
+                author_and_affiliation = model.prompt(f"""
+                根据下列文本解析出其中包含的作者姓名以及对应的所属机构。将解析出的信息整理成如下格式的python可解析的json数据，即str类型的json数据："{{"author_institutions": [{{"作者名字": "机构名称"}}], "first_author": "zhangsan"}}"。例如：
+"{{"author_institutions": [{{"zhangsan":"Zhejiang University"}}], "first_author": "zhangsan"}}"
+【限制】
+只围绕文本中的论文作者所属机构进行解析和输出，拒绝回答与此无关的话题。
+输出内容必须严格按照给定的json数据格式组织，不能偏离要求，不要做任何多余解释。
+【文本如下】
+                {pdf_first_page}
+                """)
+                if author_and_affiliation.startswith('```json'):
+                    author_and_affiliation = author_and_affiliation.split('```json')[1]
+                else:
+                    author_and_affiliation = model.prompt(f"""
+                    你的上一次输出为：{author_and_affiliation}，没有按照python可解析的json数据，即str类型的json数据输出，请重新输出。示例输出：
+                    "{{"author_institutions": [{{"zhangsan":"Zhejiang University"}}], "first_author": "zhangsan"}}"
+                    """)
+                if author_and_affiliation.endswith('```'):
+                    author_and_affiliation = author_and_affiliation.split('```')[0]
+                author_and_affiliation_dict = json.loads(author_and_affiliation)
+                self.author_and_affiliation = author_and_affiliation_dict
+                return author_and_affiliation_dict
+                
+            except json.JSONDecodeError as e:
+                if attempt < max_retries - 1:
+                    logger.warning(f"JSON解析失败，第{attempt + 1}次尝试: {e}")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error(f"JSON解析最终失败: {e}")
+                    self.author_and_affiliation = None
+                    return None
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    logger.warning(f"请求失败，第{attempt + 1}次尝试: {e}")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error(f"请求最终失败: {e}")
+                    self.author_and_affiliation = None
+                    return None
+
 
 
 class Config:
