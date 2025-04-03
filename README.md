@@ -10,7 +10,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 
 
- **🌐 直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**
+~~**🌐 直接访问网站无需部署代码 [arXivAgent](http://www.arxiv.club)**~~
+**目前将前后端开源版本添加到了prod分支。**
 
 </div>
 
